@@ -1,4 +1,4 @@
-function [X,Y,z]=show()
+function [z]=show()
 beta=85:0.5:95;
 x=-2:0.2:2;
 z=zeros(21,21);
