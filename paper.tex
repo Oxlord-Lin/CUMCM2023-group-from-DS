@@ -15,6 +15,8 @@
 \setlength{\parindent}{2em}
 \usepackage{hyperref}  
 \usepackage{tikz}
+\allowdisplaybreaks
+\usepackage{multirow}
 
 \title{基于微分思想与数值模拟的多波束海底测深布线模型}
 %\author{}
@@ -60,7 +62,28 @@
 	\item 在第四问中，我们将目标海域分化为若干个子区域。我们假设测量船在测量完一个子区域之后，必须到达该子区域的其中一条边界，并且只能前往与该区域在此边界相交的下一个相邻区域。我们假设从上一个子区域的探测终点前往下一个相邻区域的探测起点的过程中测量船会\textbf{关闭}多波束换能器，我们不把此段路程算入测线总长度中，且认为探测面积为0，与其他部分测线重叠率为0。
 \end{enumerate}
 
+
 \section{符号申明}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ll}
+	\hline
+	符号	&  含义\\ 
+	\hline
+	$\alpha$	&  		\\
+	$\beta$		&  		\\
+	$\gamma$	&  		\\
+	$\theta$			&  		\\ 
+	$\eta$			&  		\\ 
+	$w$			&  		\\
+	$d$			&  		\\ 
+	$D$			&  		\\ 
+	$L$			&  		\\ 
+	
+	\hline
+	\end{tabular}
+\end{table}
 
 \section{模型建立与求解}
 \subsection{问题一：沿等深线测深时的宽度与重叠率计算}
@@ -81,12 +104,6 @@
 	\[
 	\frac{NP}{\sin\frac{\theta}{2}} = \frac{D}{\sin(\frac{\pi-\theta}{2}+\alpha)}   \]
 	
-%	\begin{align}
-%		\frac{MP}{\sin\frac{\theta}{2}} = \frac{D}{\sin(\frac{\pi-\theta}{2}-\alpha)}     \label{eq3} \\
-%		
-%		\frac{NP}{\sin\frac{\theta}{2}} = \frac{D}{\sin(\frac{\pi-\theta}{2}+\alpha)}    \label{eq4} 
-%	
-%	\end{align}
 
 	\par 根据几何关系，我们可以得到：
 	\begin{align}
@@ -131,11 +148,11 @@
 \subsubsection{表格一的计算结果}
 	\par 题目要求计算在不同测线距中心点处距离的情况下的覆盖宽度与重叠率。设测线距中心点处距离为$S_i\in[-800,800]$，则由简单的相似关系可以得到$D_i=D_0 - S_i\sin\alpha$以及$d_i = D_i-D_{i-1}$。将$D_i$带入公式\eqref{eq3}可以得到$w_i$，将$w_i$和$d_i$带入公式\eqref{eq7}可以得到$\eta_{i}$。具体的计算结果如表\ref{ansSheet1}所示
 
-\begin{table}[]
+\begin{table}[H]
 	\caption{问题 1 的计算结果}\label{ansSheet1}
 	\begin{tabular}{llllll}
 		\hline
-		测线距中心点处的距离/m  & -800     & -600        & -400         & -200         & \multicolumn{1}{l|}{0} \\ \hline
+		测线距中心点处的距离/m  & -800     & -600        & -400         & -200         &  0\\ \hline
 		海水深度/m        & 90.94156 & 85.70616898 & 80.47077932  & 75.23538966  & 70                     \\
 		覆盖宽度/m        & 315.6802 & 297.506882  & 279.3335758  & 261.1602696  & 242.9869634            \\
 		与前一条测线的重叠率/\% & ——       & 33.63472105 & 29.58077605  & 24.99933568  & 19.7802798             \\ \hline
@@ -145,19 +162,84 @@
 		与前一条测线的重叠率/\% & 13.78054 & 6.810804913 & -1.384863416 & -11.16109869 &                        \\ \hline
 	\end{tabular}
 \end{table}
-\newpage
+
 
 
 \subsection{问题二：与海底坡面法向在水平面投影成一定角度时的宽度计算}
-	\par 第二问的几何关系如图\ref{pro2Geo}所示。
+	\par 第二问的几何关系如图\ref{pro2Geo}所示：
 	\begin{figure}[H]
 		\centering  %图片全局居中
 		\includegraphics[width=0.95\textwidth]{问题二//第二题几何关系示意图}
 		\caption{第二问几何关系示意图}
 		\label{pro2Geo}
 	\end{figure}
-	\par 如上文所述，第二问是第一问的延伸，关键在于求出
+	其中S是测量船所在的位置，T是测量船位置在水平面上的投影，R是海域中心点。$w=MN\cos\gamma$是覆盖宽度，$\gamma$是$MN$与水平面形成的线面角。$L=RT$是测量船距海域中心点处的距离，$\beta$是测线方向与海底坡面的法向在水平面上投影的夹角。我们以坡面法向量在水平面上的投影方向为x方向，以等深线的方向为y方向，以竖直方向为z方向，建立如图所示的空间直角坐标系Oxyz，其中x轴经过T点，y轴经过R点。
+	\par 如上文所述，第二问是第一问的延伸，只要能够求出$\gamma$，就能够变成第一问的模型。我们采用向量运算的方式来求解$\gamma$。
+	\par MN所在的直线是平面SAB和海底坡面的交线。平面SAB的法向量为$v_1=[\cos\beta,\sin\beta,0]^\top$，海底坡面的法向量为$v_2=[-\sin\alpha,0,\cos\alpha]^\top$，MN直线的方向向量$v_3$需要满足：
+	\begin{equation}
+		v_3^\top v_1 = v_3^\top v_2 = 0  \label{eq8}
+	\end{equation}
+	而直线AB的方向向量可以表示为$v_4 = [\sin\beta,-\cos\beta,0]^\top$.
+	\par 由于平面SAB垂直于水平面，因此有
+	\begin{equation}
+		\gamma = <\vec{MN},\vec{AB}> \label{eq9}
+	\end{equation}
+	\par 由式\eqref{eq8}\eqref{eq9}可以得到$\gamma(<\frac{\pi}{2})$的余弦值和正弦值分别为
+	\begin{align}
+		\cos\gamma=\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}\\
+		\sin\gamma=\frac{\sin\alpha\sin\beta}{\sqrt{1-\sin^2\alpha\cos^2\beta}}
+	\end{align}
+	\par 此时的覆盖宽度w的表达式为：
+	\begin{align}
+		w &= w(D,\beta) \notag \\
+		& = D\cos\gamma\sin\frac{\theta}{2}\left[\frac{\sin\frac{\theta}{2}}{\cos(\frac{\theta}{2}+\gamma)}  +  \frac{\sin\frac{\theta}{2}}{\cos(\frac{\theta}{2}-\gamma)}\right] \notag \\
+		&=D\cos\gamma\sin\frac{\theta}{2}\left[\frac{1}{\cos\frac{\theta}{2}\cos\gamma-\sin\frac{\theta}{2}\sin\gamma}  	+ \frac{1}{\cos\frac{\theta}{2}\cos\gamma+\sin\frac{\theta}{2}\sin\gamma} \right] \notag \\
+		&=D\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}\sin\frac{\theta}{2}\left[\frac{1}{\cos\frac{\theta}{2}\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}-\sin\frac{\theta}{2}\frac{\sin\alpha\sin\beta}{\sqrt{1-\sin^2\alpha\cos^2\beta}}}  \notag	\\ &+\left. \frac{1}{\cos\frac{\theta}{2}\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}+\sin\frac{\theta}{2}\frac{\sin\alpha\sin\beta}{\sqrt{1-\sin^2\alpha\cos^2\beta}}} \label{eq12}\right] 
+	\end{align}
+	注意到\textbf{w在本质上只与水深$D$和测线的方向$\beta$有关}。
+	\par 当测线方向夹角为$\beta$，测量船距海域中心点处距离为$L$时，根据图\ref{pro2Geo}的几何关系，可得水深
+	\begin{equation}
+			D=D_0-L\sin(\beta-\frac{\pi}{2})\sin\alpha \label{13}
+	\end{equation}
+	其中$D_0$是海域中心点的水深。将式\eqref{13}再带入\eqref{eq12}可以得到专用于计算表2的公式：
+	\begin{align}
+		w&=w(L,\beta) \notag \\
+		&=[D_0-L\sin(\beta-\frac{\pi}{2})\sin\alpha]\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}\sin\frac{\theta}{2}\left[\frac{1}{\cos\frac{\theta}{2}\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}-\sin\frac{\theta}{2}\frac{\sin\alpha\sin\beta}{\sqrt{1-\sin^2\alpha\cos^2\beta}}}  \notag	\\ &+\left.\frac{1}{\cos\frac{\theta}{2}\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}+\sin\frac{\theta}{2}\frac{\sin\alpha\sin\beta}{\sqrt{1-\sin^2\alpha\cos^2\beta}}} \label{eq13} \right] 
+	\end{align}
+	\par	将表2中提供的各$\beta$与$L$值带入，取$\theta=120\degree,\, \alpha=1.5\degree,D_0=120m$，得到计算结果如下：
 
+
+
+\begin{table}[H]
+	\centering
+	\caption{问题2的计算结果}
+	\begin{tabular}{llllll}
+		\hline
+		\multicolumn{2}{l}{\multirow{2}{*}{覆盖宽度/m}} & \multicolumn{4}{l}{测量船距海域中心点处的距离/海里}      \\
+		\multicolumn{2}{l}{}                        & 0        & 0.3      & 0.6      & 0.9      \\ \hline
+		\multirow{8}{*}{测线方向夹角/°}       & 0         & 415.8347 & 466.2508 & 516.667  & 567.0831 \\
+		& 45        & 416.1915 & 451.8717 & 487.5519 & 523.232  \\
+		& 90        & 416.5491 & 416.5491 & 416.5491 & 416.5491 \\
+		& 135       & 416.1915 & 380.5113 & 344.8311 & 309.151  \\
+		& 180       & 415.8347 & 365.4186 & 315.0024 & 264.5863 \\
+		& 225       & 416.1915 & 380.5113 & 344.8311 & 309.151  \\
+		& 270       & 416.5491 & 416.5491 & 416.5491 & 416.5491 \\
+		& 315       & 416.1915 & 451.8717 & 487.5519 & 523.232  \\ \hline
+		\multicolumn{2}{l}{\multirow{2}{*}{覆盖宽度/m}} & \multicolumn{4}{l}{测量船距海域中心点处的距离/海里}      \\
+		\multicolumn{2}{l}{}                        & 1.2      & 1.5      & 1.8      & 2.1      \\ \hline
+		\multirow{8}{*}{测线方向夹角/°}       & 0         & 617.4992 & 667.9154 & 718.3315 & 768.7477 \\
+		& 45        & 558.9122 & 594.5924 & 630.2726 & 665.9528 \\
+		& 90        & 416.5491 & 416.5491 & 416.5491 & 416.5491 \\
+		& 135       & 273.4708 & 237.7906 & 202.1104 & 166.4302 \\
+		& 180       & 214.1701 & 163.754  & 113.3379 & 62.92173 \\
+		& 225       & 273.4708 & 237.7906 & 202.1104 & 166.4302 \\
+		& 270       & 416.5491 & 416.5491 & 416.5491 & 416.5491 \\
+		& 315       & 558.9122 & 594.5924 & 630.2726 & 665.9528 \\ \hline
+	\end{tabular}
+\end{table}
+	
+
+	
 
 
 
