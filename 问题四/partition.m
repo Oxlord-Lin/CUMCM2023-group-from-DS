@@ -15,7 +15,8 @@ for i = 2 : lenX - 1
         yy = [y(j-1),y(j),y(j+1),y(j-1),y(j),y(j+1),y(j-1),y(j),y(j+1)]';
         zz = [z(i-1,j-1),z(i-1,j),z(i-1,j+1),z(i,j-1),z(i,j),z(i,j+1),z(i+1,j-1),z(i+1,j),z(i+1,j+1)]';
         temp = [xx,yy,ones(9,1)]\zz;
-        temp = 20*temp./norm(temp).*sign(temp(1));
+        temp = [temp(1),temp(2),-1]';
+        temp = 10*temp./norm(temp);
         A(i,j) = temp(1);
         B(i,j) = temp(2);
         C(i,j) = temp(3);
@@ -39,23 +40,21 @@ C(1:end,end) = C(1:end,end);
 % S = sign(A);
 % B = S.*B;
 % C = S.*C;
-
+%% 
 Table = zeros(lenX*lenY,6);
 count = 0;
 for i = 1:lenX
     for j = 1:lenY
         count = count + 1;
-        Table(count,1:6) = [5*x(i),5*y(j),0.3*z(i,j),A(i,j),B(i,j),C(i,j)];
+        Table(count,1:6) = [x(i),y(j),0.08*z(i,j),A(i,j),B(i,j),C(i,j)];
     end
 end
 
-%%
-class = 6;
-[idx,C] = kmeans(Table,class,'Replicates',4);
-figure;
+class = 5;
+[idx,~] = kmeans(Table,class,'Replicates',5);
+nexttile
 for i = 1:class
     plot(Table(idx==i,1),Table(idx==i,2),'.','MarkerSize',12)
     hold on
 end
 axis equal
-
