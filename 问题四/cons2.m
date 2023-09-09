@@ -1,10 +1,10 @@
-function [c,ceq]=cons(x)
+function [c,ceq]=cons2(x)
 [n,~]=size(x);
 c=zeros(n,1);
-alpha=pi/120;
-theta=pi/3;
-d0=110;
-l=4;
+alpha=0.4199*pi/180;
+theta=pi/3; 
+d0=39.42;
+l=1.5;
 D=d0+(l/2-x(1))*1852*tan(alpha);
 B1=x(1)*1852-D*cos(alpha)*sin(theta)/cos(alpha+theta);
 c(1)=B1;

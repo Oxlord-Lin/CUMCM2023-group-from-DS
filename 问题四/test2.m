@@ -37,6 +37,7 @@ A(1:end,end) = A(1:end,end);
 B(1:end,end) = B(1:end,end);
 C(1:end,end) = C(1:end,end);
 
+
 % S = sign(A);
 % B = S.*B;
 % C = S.*C;
@@ -49,12 +50,17 @@ for i = 1:lenX
         Table(count,1:6) = [x(i),y(j),100*z(i,j),A(i,j),B(i,j),C(i,j)];
     end
 end
-
-class = 6;
-[idx,~] = kmeans(Table,class,'Replicates',5);
-nexttile
-for i = 1:class
-    plot(Table(idx==i,1),Table(idx==i,2),'.','MarkerSize',12)
-    hold on
+inc=zeros(lenX*lenY,1);
+count=0;
+s=0;
+for i=1:141
+    for j=(143+round(0.4*x)):200
+        count=count+1;
+        if Table(count,4)^2+Table(count,5)^2~=0
+            inc(count)=atan(sqrt(Table(count,4)^2+Table(count,5)^2)/-Table(count,6))*180/pi;
+            s=s+inc(count);
+        end
+    end
 end
-axis equal
+s=s/count;
+s

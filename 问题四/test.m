@@ -46,15 +46,29 @@ count = 0;
 for i = 1:lenX
     for j = 1:lenY
         count = count + 1;
-        Table(count,1:6) = [x(i),y(j),100*z(i,j),A(i,j),B(i,j),C(i,j)];
+        Table(count,1:7) = [x(i),y(j),z(i,j),A(i,j),B(i,j),C(i,j),C(i,j)/(100*(sqrt(A(i,j))^2+B(i,j)^2))];
     end
 end
-
-class = 6;
-[idx,~] = kmeans(Table,class,'Replicates',5);
-nexttile
-for i = 1:class
-    plot(Table(idx==i,1),Table(idx==i,2),'.','MarkerSize',12)
-    hold on
-end
-axis equal
+% inc=zeros(lenX*lenY,1);
+% count=0;
+% for i=1:lenX
+%     for j=1:lenY
+%         count=count+1;
+%         if Table(count,4)^2+Table(count,5)^2~=0
+%             inc(count)=100*sqrt(Table(count,4)^2+Table(count,5)^2)/Table(count,6);
+%         end
+%     end
+% end
+% dis=zeros(lenX*lenY,1);
+% for i=2:lenX-1
+%     for j=2:lenY-1
+%         count=i*j;
+%         dis(count)=(inc(count)-inc(count-1))^2+(inc(count)-inc(count+1))^2 +(inc(count)-inc(count-j))^2+(inc(count)-inc(count+j))^2+(inc(count)-inc(count-j-1))^2+(inc(count)-inc(count-j+1))^2+(inc(count)-inc(count+j-1))^2+(inc(count)-inc(count+j+1))^2;
+%         if dis(count)>5
+%             scatter(x(i),y(j))
+%             hold on
+%         end
+%     end
+% end
+% 
+% 
