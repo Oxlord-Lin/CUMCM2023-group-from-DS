@@ -1,10 +1,9 @@
-W=zeros(8,8);
+W=zeros(8,8); %结果表格
 for i=1:8
     for j=1:8
-        l=0.3*(j-1)*1852;
-        b=45*(i-1);
-        h=120+l*cos(b*pi/180)*tan(pi/120);
-        W(i,j)=wid(b,h,l);
+        l=0.3*(j-1)*1852; %到中心点距离
+        b=45*(i-1);     %beta角（角度）
+        W(i,j)=wid(b,l);
     end
 end
 W
