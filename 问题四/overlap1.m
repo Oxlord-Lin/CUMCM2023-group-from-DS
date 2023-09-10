@@ -1,7 +1,9 @@
 function [y]=overlap1(x1,x2)
-alpha=0.6996*pi/180;
+alpha=1.2693*pi/180;
+d0=83.96;
+l=2.02;
 theta=pi/3;
 d=(x2-x1)*1852;
-D=66.84+(0.68-x1)*1852*tan(alpha);
+D=d0+(l/2-x1)*1852*tan(alpha);
 W=D*(sin(theta)/cos(theta+alpha)+sin(theta)/cos(theta-alpha));
 y=1-d*cos(theta)/(W*cos(theta+alpha));
