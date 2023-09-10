@@ -14,5 +14,5 @@ ub=l*ones(n,1);
 nonlcon=@cons;
 fun=@(x)(w*n+x(n)-x(1));
 x=fmincon(fun,x0,A,b,Aeq,beq,lb,ub,nonlcon,options);
-x
+x;
 fun(x)

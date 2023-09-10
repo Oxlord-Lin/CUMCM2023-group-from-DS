@@ -17,6 +17,8 @@
 \usepackage{tikz}
 \allowdisplaybreaks
 \usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amsfonts,amssymb} 
 
 \title{基于微分思想与数值模拟的多波束海底测深布线模型}
 %\author{}
@@ -146,7 +148,7 @@
 	其中$\eta_{i+1}$是第i+1条测线相对于第i条测线（这里指更深处的测线）的重叠率，$d_{i+1}$是第i+1和第i条船的间距，$w_i$是第i条测线的覆盖宽度。
 	
 \subsubsection{表格一的计算结果}
-	\par 题目要求计算在不同测线距中心点处距离的情况下的覆盖宽度与重叠率。设测线距中心点处距离为$S_i\in[-800,800]$，则由简单的相似关系可以得到$D_i=D_0 - S_i\sin\alpha$以及$d_i = D_i-D_{i-1}$。将$D_i$带入公式\eqref{eq3}可以得到$w_i$，将$w_i$和$d_i$带入公式\eqref{eq7}可以得到$\eta_{i}$。具体的计算结果如表\ref{ansSheet1}所示
+	\par 题目要求计算在不同测线距中心点处距离的情况下的覆盖宽度与重叠率。设测线距中心点处距离为$S_i\in[-800,800]$，则由简单的相似关系可以得到$D_i=D_0 - S_i\sin\alpha$以及$d_i = D_i-D_{i-1}$，其中$D_0$是中心点处的水深。将$D_i$带入公式\eqref{eq3}可以得到$w_i$，将$w_i$和$d_i$带入公式\eqref{eq7}可以得到$\eta_{i}$。具体的计算结果如表\ref{ansSheet1}所示
 
 \begin{table}[H]
 	\caption{问题 1 的计算结果}\label{ansSheet1}
@@ -166,6 +168,7 @@
 
 
 \subsection{问题二：与海底坡面法向在水平面投影成一定角度时的宽度计算}
+\subsubsection{建立覆盖宽度w的通用计算模型}
 	\par 第二问的几何关系如图\ref{pro2Geo}所示：
 	\begin{figure}[H]
 		\centering  %图片全局居中
@@ -186,33 +189,48 @@
 	\end{equation}
 	\par 由式\eqref{eq8}\eqref{eq9}可以得到$\gamma(<\frac{\pi}{2})$的余弦值和正弦值分别为
 	\begin{align}
-		\cos\gamma=\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}\\
-		\sin\gamma=\frac{\sin\alpha\sin\beta}{\sqrt{1-\sin^2\alpha\cos^2\beta}}
+		\cos\gamma=\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}\\ 
+		\sin\gamma=\frac{\sin\alpha\sin\beta}{\sqrt{1-\sin^2\alpha\cos^2\beta}} 
 	\end{align}
 	\par 此时的覆盖宽度w的表达式为：
 	\begin{align}
-		w &= w(D,\beta) \notag \\
-		& = D\cos\gamma\sin\frac{\theta}{2}\left[\frac{\sin\frac{\theta}{2}}{\cos(\frac{\theta}{2}+\gamma)}  +  \frac{\sin\frac{\theta}{2}}{\cos(\frac{\theta}{2}-\gamma)}\right] \notag \\
-		&=D\cos\gamma\sin\frac{\theta}{2}\left[\frac{1}{\cos\frac{\theta}{2}\cos\gamma-\sin\frac{\theta}{2}\sin\gamma}  	+ \frac{1}{\cos\frac{\theta}{2}\cos\gamma+\sin\frac{\theta}{2}\sin\gamma} \right] \notag \\
-		&=D\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}\sin\frac{\theta}{2}\left[\frac{1}{\cos\frac{\theta}{2}\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}-\sin\frac{\theta}{2}\frac{\sin\alpha\sin\beta}{\sqrt{1-\sin^2\alpha\cos^2\beta}}}  \notag	\\ &+\left. \frac{1}{\cos\frac{\theta}{2}\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}+\sin\frac{\theta}{2}\frac{\sin\alpha\sin\beta}{\sqrt{1-\sin^2\alpha\cos^2\beta}}} \label{eq12}\right] 
+		w &= w(D,\beta) \notag   \\
+		& = D\cos\gamma\left[\frac{\sin\frac{\theta}{2}}{\cos(\frac{\theta}{2}+\gamma)}  +  \frac{\sin\frac{\theta}{2}}{\cos(\frac{\theta}{2}-\gamma)}\right]  \notag \\
+		&=D\cos\gamma\sin\frac{\theta}{2}\left[\frac{1}{\cos\frac{\theta}{2}\cos\gamma-\sin\frac{\theta}{2}\sin\gamma}  	+ \frac{1}{\cos\frac{\theta}{2}\cos\gamma+\sin\frac{\theta}{2}\sin\gamma} \right]  \notag \\
+		&=D \cos\alpha \sin\frac{\theta}{2}\left[\frac{1}{\cos\frac{\theta}{2}\cos\alpha-\sin\frac{\theta}{2}\sin\alpha\sin\beta}  
+				+ \frac{1}{\cos\frac{\theta}{2}\cos\alpha+\sin\frac{\theta}{2}\sin\alpha\sin\beta}  \right]  \notag  \\
+		&= 2 D \cos^2\alpha \frac{\sin\frac{\theta}{2}\cos\frac{\theta}{2}}{(\cos\frac{\theta}{2}\cos\alpha)^2-(\sin\frac{\theta}{2}\sin\alpha\sin\beta)^2}  \label{eqtest}
 	\end{align}
+%	\begin{align}
+%		w &= w(D,\beta) \notag  \label{eq11} \\
+%		& = D\cos\gamma\left[\frac{\sin\frac{\theta}{2}}{\cos(\frac{\theta}{2}+\gamma)}  +  \frac{\sin\frac{\theta}{2}}{\cos(\frac{\theta}{2}-\gamma)}\right]  \notag \\
+%		&=D\cos\gamma\sin\frac{\theta}{2}\left[\frac{1}{\cos\frac{\theta}{2}\cos\gamma-\sin\frac{\theta}{2}\sin\gamma}  	+ \frac{1}{\cos\frac{\theta}{2}\cos\gamma+\sin\frac{\theta}{2}\sin\gamma} \right]  \notag \\
+%		&=D \cos\alpha \sin\frac{\theta}{2}\left[\frac{1}{\cos\frac{\theta}{2}\cos\alpha-\sin\frac{\theta}{2}\sin\alpha\sin\beta}  
+%		+ \frac{1}{\cos\frac{\theta}{2}\cos\alpha+\sin\frac{\theta}{2}\sin\alpha\sin\beta}  \right]  \notag  \\
+%		&= 2 D \cos^2\alpha \frac{\sin\frac{\theta}{2}\cos\frac{\theta}{2}}{(\cos\frac{\theta}{2}\cos\alpha)^2-(\sin\frac{\theta}{2}\sin\alpha\sin\beta)^2} 
+%		
+%	\end{align}
 	注意到\textbf{w在本质上只与水深$D$和测线的方向$\beta$有关}。
-	\par 当测线方向夹角为$\beta$，测量船距海域中心点处距离为$L$时，根据图\ref{pro2Geo}的几何关系，可得水深
+
+\subsubsection{建立覆盖宽度w的第二问专用计算模型}
+	\par 下面我们根据第二问表2的要求，建立专用的计算模型。当测线方向夹角为$\beta$，测量船距海域中心点处距离为$L$时，根据图\ref{pro2Geo}的几何关系，可得水深
 	\begin{equation}
-			D=D_0-L\sin(\beta-\frac{\pi}{2})\sin\alpha \label{13}
+			D=D_0-L\sin(\beta-\frac{\pi}{2})\tan\alpha \label{eq13}
 	\end{equation}
-	其中$D_0$是海域中心点的水深。将式\eqref{13}再带入\eqref{eq12}可以得到专用于计算表2的公式：
+	其中$D_0$是海域中心点的水深。将式\eqref{eq13}再带入\eqref{eqtest}可以得到专用于计算表2的公式：
 	\begin{align}
 		w&=w(L,\beta) \notag \\
-		&=[D_0-L\sin(\beta-\frac{\pi}{2})\sin\alpha]\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}\sin\frac{\theta}{2}\left[\frac{1}{\cos\frac{\theta}{2}\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}-\sin\frac{\theta}{2}\frac{\sin\alpha\sin\beta}{\sqrt{1-\sin^2\alpha\cos^2\beta}}}  \notag	\\ &+\left.\frac{1}{\cos\frac{\theta}{2}\frac{\cos\alpha}{\sqrt{1-\sin^2\alpha\cos^2\beta}}+\sin\frac{\theta}{2}\frac{\sin\alpha\sin\beta}{\sqrt{1-\sin^2\alpha\cos^2\beta}}} \label{eq13} \right] 
+		&=[D_0-L\sin(\beta-\frac{\pi}{2})\tan\alpha]\cos\alpha\sin\frac{\theta}{2}\left[\frac{1}{\cos\frac{\theta}{2}\cos\alpha-\sin\frac{\theta}{2}\sin\alpha\sin\beta}  
+		+\left. \frac{1}{\cos\frac{\theta}{2}\cos\alpha+\sin\frac{\theta}{2}\sin\alpha\sin\beta} \label{eq12}\right] \notag \\
+		&= 2\left[D_0-L\sin(\beta-\frac{\pi}{2})\tan\alpha\right] \cos^2\alpha \frac{\sin\frac{\theta}{2}\cos\frac{\theta}{2}}{(\cos\frac{\theta}{2}\cos\alpha)^2-(\sin\frac{\theta}{2}\sin\alpha\sin\beta)^2}  
 	\end{align}
-	\par	将表2中提供的各$\beta$与$L$值带入，取$\theta=120\degree,\, \alpha=1.5\degree,D_0=120m$，得到计算结果如下：
+	\par	将表2中提供的各$\beta$与$L$值带入，取$\theta=120\degree,\, \alpha=1.5\degree,D_0=120m$，得到计算结果如表\ref{ansSheet2}：
 
 
 
 \begin{table}[H]
 	\centering
-	\caption{问题2的计算结果}
+	\caption{问题2的计算结果} \label{ansSheet2}
 	\begin{tabular}{llllll}
 		\hline
 		\multicolumn{2}{l}{\multirow{2}{*}{覆盖宽度/m}} & \multicolumn{4}{l}{测量船距海域中心点处的距离/海里}      \\
@@ -237,14 +255,132 @@
 		& 315       & 558.9122 & 594.5924 & 630.2726 & 665.9528 \\ \hline
 	\end{tabular}
 \end{table}
-	
-
-	
-
-
 
 
 \subsection{问题三：矩形理想海域内最短布线规划}
+\subsubsection{基于积分中值定理与贪心思想说明平行等深线测深时才可能得到最短总路径}
+	设测线的曲线参数方程为$\Gamma(t)$，在某一点的宽度为$w(D(t),\beta(t))$，重叠率为$\eta(t)$，曲线覆盖的总面积为$S$，那么由积分中值定理，应有如下关系：
+	\begin{equation}
+		S &= \int_{\Gamma}}(1-\eta(t))w(D(t),\beta(t))\,dt \notag \\
+	      & = (1-\eta(t^*))w(D((t^*) , \beta(t^*)) \notag \\
+	      & = (1-\bar{\eta}) \bar{w} l  \label{eq14}
+	\end{equation}
+
+	其中，$t^*$为曲线中的某一点，$\bar{\eta}$，$\bar{w}$分别为“平均”重叠率和“平均”覆盖宽度，$l$为曲线总长度。
+	\par 从实际探测工作经验出发，S应该接近待测海域的总面积，多余测量的面积可以忽略不计；否则，当多余面积过多时，也显然不是长度最短的测线。若想要侧线总长度$l$最长，应该要求$\bar{\eta}$尽可能小，$\bar{w}$尽可能地大；从贪心算法的思想出发，这要求在全过程中，尽可能时刻使$\eta(t)$小，而$w(t)$尽可能大。
+	\par 我们把上述要求拆分成两个步骤。
+	
+	\par 第一步，观察如何使$w(t)$尽可能大。由式\eqref{eqtest}可知，当船的坐标既定（也即水深D既定），$w$只与$\sin\beta$有关。注意到$-(\sin\frac{\theta}{2}\sin\alpha\sin\beta)^2$这一项在分母上，并且在$\alpha=1.5\degree,\theta=120\degree$时$(\sin\frac{\theta}{2}\sin\alpha\sin\beta)^2$显然小于$(\cos\frac{\theta}{2}\cos\alpha)^2$；那么当$|\sin\beta|=1$时，也即$\beta=90\degree$或者$\beta=270\degree$时，$w$能够取到最大值。我们绘制了$f(\beta)=\frac{1}{(\cos\frac{\theta}{2}\cos\alpha)^2-(\sin\frac{\theta}{2}\sin\alpha\sin\beta)^2}$的函数图像\ref{pro3beta}如下，也验证了我们的判断。这说明，从贪心算法的思想出发，船尽量沿着等深线测深，才有可能使$w$最大。
+	\begin{figure}[H]
+		\centering  %图片全局居中
+		\includegraphics[width=0.95\textwidth]{问题三//f(beta)函数图像}
+		\caption{f($\beta$)变化趋势图}
+		\label{pro3beta}
+	\end{figure}
+
+\subsubsection{建立与求解平行等深线测深时的最短路径优化模型}
+	\par 第二步，我们使$\eta(t)$尽可能地小，即尽可能接近$10\%$。在控制测线之间沿等深线平行排布时，这意谓着在满足海域全覆盖的约束下，尽量增大测线间距。以海洋的最深处为起点，由西向东建立坐标系，如图\ref{pro3Geo}所示。其中，坐标轴方向为由西向东，虚线围成的部分为待测海域，实线为路线图，彩色的矩形为覆盖范围，彩色矩形之间有一定的重叠部分。在待测海域内部线路长度全部纳入考量，在待测海域外或者边缘的部分（掉头转弯），我们只考虑平行于坐标轴的部分。
+	\begin{figure}[H]
+		\centering  %图片全局居中
+		\includegraphics[width=0.95\textwidth]{问题三//优化示意图}
+		\caption{问题三优化模型示意图}
+		\label{pro3Geo}
+	\end{figure}
+	设有n条测线，\textbf{每条测线离最深处的距离$x_i$作为决策变量}。根据题意，约束条件包括：
+	\begin{enumerate}
+		\item 为保证全覆盖，第1条测线覆盖范围的最西端坐标$B_1(x_1)$需要小于0，第n条测线覆盖范围最东端坐标$B_n(x_n)$必须大于0;
+		\item 第i条和第i-1条测线的重叠率$\eta_i(x_i,x_i-1)$在$10\%~20\%$之间;
+		\item 所有的布线都应该在待测海域范围之内，否则必不是最优路线。
+	\end{enumerate}
+	根据模型假设，总的路程应包括每条平行于等深线的测线（长度为2n）以及所有掉头转弯的路程（长度为$x_n-x_1$）。
+	
+	\par 依据以上分析，我们建立的优化模型如下：
+	\begin{equation}
+		\begin{split}
+			\min & \  f(x_1,x_2,\dots,x_n) = 2n+(x_n-x_1) \\
+			s.t. & \  B_1(x_1)\le0\\
+			& \  B_n(x_n)\ge4\\
+			& \ \eta_i(x_i,x_{i-1}) \in [10\%,20\%] \quad \text{for}\,\, i = 2,3,\dots, n\\
+			& \  x_i\in [0,4] \quad \text{for}\,\, i=1,2,\dots n\\
+		\end{split}
+		\label{eq15}
+	\end{equation}
+	其中，根据图\ref{pro1Geo}和图\ref{pro1Eta}所示的几何关系，我们可以得到
+	\begin{align*}
+		B_1(x_1) &= x_1 - \frac{D_1\cos\alpha\sin\frac{\theta}{2}}{\cos(\alpha+\frac{\theta}{2})}\\
+		B_n(x_n) &= x_n + \frac{D_n\cos\alpha\sin\frac{\theta}{2}}{\cos(\alpha-\frac{\theta}{2}))}\\
+		\eta_i(x_i,x_{i-1}) &= (1-\frac{d_i\cos\frac{\theta}{2}}{w_{i-1}cos(\alpha+\frac{theta}{2})}) \times 100 \%
+	\end{align*}
+	$D_1,D_n$分别是第1条和第n条测线处的水深，$d_i$是第i条测线距离第i-1条测线的距离，$w_i$是第i条测线的覆盖宽度，它们都是关于决策变量$x_i$的线性函数。
+	\par 以上优化问题\eqref{eq15}可以用matlab的optimization toolbox中的fmincon函数求解。
+	下面，我们在n=30~40范围内依次寻找最优解，情况如下：
+	\begin{table}[H]
+		\centering
+		\caption{寻找最优布线}
+		\begin{tabular}{ll}
+			\hline
+			布线条数n & 最短测线长度/海里 \\ \hline
+			30    & 不可行       \\
+			31    & 不可行       \\
+			32    & 不可行       \\
+			33    & 不可行       \\
+			34    & \textbf{71.7942}   \\
+			35    & 73.7942   \\
+			36    & 75.7942   \\
+			37    & 77.7942   \\
+			38    & 79.7942   \\
+			39    & 81.8607   \\
+			40    & 83.8064   \\ \hline
+		\end{tabular}
+	\end{table}
+	当n大于40时，$x_n-x1$已经几乎接近2，总路程将随布线条数的增加而增加（每次大约增加2海里），没有必要再尝试求解。因此，我们可以判断\textbf{测线条数n=34时，可得最短测线}。我们给出n=34时的最优解的表格如下：
+	\begin{table}[H]
+		\centering
+		\caption{第三问最优解}
+		\begin{tabular}{ccc}
+			\hline
+			测线编号i & 测线距海域西侧边界的距离/海里 & 与上一条测线的重叠率/\% \\ \hline
+			1     & 0.193586281     & -             \\
+			2     & 0.511803816     & 10.0002\%     \\
+			3     & 0.801593352     & 11.0972\%     \\
+			4     & 1.056683096     & 15.2007\%     \\
+			5     & 1.305547844     & 10.6989\%     \\
+			6     & 1.536924545     & 10.0000\%     \\
+			7     & 1.750228864     & 10.0010\%     \\
+			8     & 1.946877095     & 10.0000\%     \\
+			9     & 2.128167594     & 10.0000\%     \\
+			10    & 2.295298287     & 10.0008\%     \\
+			11    & 2.449372781     & 10.0030\%     \\
+			12    & 2.59141963      & 10.0000\%     \\
+			13    & 2.722361353     & 10.0080\%     \\
+			14    & 2.843088482     & 10.0000\%     \\
+			15    & 2.954387125     & 10.0000\%     \\
+			16    & 3.056993624     & 10.0000\%     \\
+			17    & 3.151576459     & 10.0099\%     \\
+			18    & 3.238782967     & 10.0000\%     \\
+			19    & 3.319169087     & 10.0109\%     \\
+			20    & 3.393027983     & 10.3146\%     \\
+			21    & 3.461377734     & 10.0000\%     \\
+			22    & 3.5243893       & 10.0003\%     \\
+			23    & 3.582475362     & 10.0073\%     \\
+			24    & 3.63602868      & 10.0018\%     \\
+			25    & 3.685370906     & 10.0543\%     \\
+			26    & 3.73088941      & 10.0000\%     \\
+			27    & 3.772853033     & 10.0000\%     \\
+			28    & 3.811539403     & 10.0000\%     \\
+			29    & 3.847200907     & 10.0090\%     \\
+			30    & 3.880080895     & 10.0000\%     \\
+			31    & 3.910393038     & 10.0000\%     \\
+			32    & 3.938337881     & 10.0000\%     \\
+			33    & 3.96409704      & 10.0114\%     \\
+			34    & 3.987835105     & 10.0479\%     \\ \hline
+		\end{tabular}
+	\end{table}
+	
+
+
+
+
 \subsection{问题四：真实海域内多目标最优布线规划}
 
 \section{模型优缺点评价}

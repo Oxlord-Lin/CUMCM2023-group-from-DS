@@ -11,11 +11,13 @@ c(1)=B1;
 D=d0+(l/2-x(n))*1852*tan(alpha);
 B2=x(n)*1852+D*cos(alpha)*sin(theta)/cos(theta-alpha);
 c(2)=l*1852-B2;
+ys = [];
 for i=2:n
     d=(x(i)-x(i-1))*1852;
     D=d0+(l/2-x(i-1))*1852*tan(alpha);
     W=D*(sin(theta)/cos(theta+alpha)+sin(theta)/cos(theta-alpha));
     y=1-d*cos(theta)/(W*cos(theta+alpha));
-    c(i+1)=y*(y-0.2);
+    ys = [ys;y];
+    c(i+1)=(y-0.1)*(y-0.2);
 end
 ceq=[];
