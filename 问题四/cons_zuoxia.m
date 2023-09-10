@@ -1,9 +1,9 @@
 function [c,ceq]=cons3(x)
 [n,~]=size(x);
 c=zeros(n,1);
-alpha=0.3079*pi/180;
+alpha=0.3328*pi/180;
 theta=pi/3; 
-d0=23.76;
+d0=24.92;
 l=1.98;
 D=d0+(l/2-x(1))*1852*tan(alpha);
 B1=x(1)*1852-D*cos(alpha)*sin(theta)/cos(alpha+theta);
