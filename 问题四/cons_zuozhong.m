@@ -16,6 +16,6 @@ for i=2:n
     D=d0+(l/2-x(i-1))*1852*tan(alpha);
     W=D*(sin(theta)/cos(theta+alpha)+sin(theta)/cos(theta-alpha));
     y=1-d*cos(theta)/(W*cos(theta+alpha));
-    c(i+1)=y*(y-0.2);
+    c(i+1)=(y-0.05)*(y-0.1);
 end
 ceq=[];

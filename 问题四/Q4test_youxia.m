@@ -1,5 +1,5 @@
 options = optimoptions('fmincon','Algorithm','sqp','MaxFunctionEvaluations',15000);
-n=15;
+n=16;
 l=2.02;
 w=2.82;
 x0 = linspace(0,l,n)';

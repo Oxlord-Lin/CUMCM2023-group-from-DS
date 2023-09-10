@@ -1,10 +1,10 @@
-function [c,ceq]=cons4(x)
+function [c,ceq]=cons3(x)
 [n,~]=size(x);
 c=zeros(n,1);
-alpha=2.6965*pi/180;
+alpha=0.3079*pi/180;
 theta=pi/3; 
-d0=140.76;
-l=1.14;
+d0=23.76;
+l=1.98;
 D=d0+(l/2-x(1))*1852*tan(alpha);
 B1=x(1)*1852-D*cos(alpha)*sin(theta)/cos(alpha+theta);
 c(1)=B1;
@@ -16,6 +16,6 @@ for i=2:n
     D=d0+(l/2-x(i-1))*1852*tan(alpha);
     W=D*(sin(theta)/cos(theta+alpha)+sin(theta)/cos(theta-alpha));
     y=1-d*cos(theta)/(W*cos(theta+alpha));
-    c(i+1)=y*(y-0.2);
+    c(i+1)=(y-0.05)*(y-0.1);
 end
 ceq=[];
