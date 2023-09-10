@@ -1,0 +1,21 @@
+options = optimoptions('fmincon','Algorithm','sqp','MaxFunctionEvaluations',15000);
+l=1.14;
+n=5;
+theta=atan(1.14/2.82);    % 0.3802
+% a=2.82*tan(theta)        % 1.1400
+k1=cot(theta);           
+k2=-tan(theta)   ;         
+% x0=4-a*cos(theta)        % 2.9431
+% y0=a*sin(theta)          % 0.4273
+% beta6=2.6965;
+x0 = linspace(0,l,n)';
+A=[];
+b=[];
+Aeq=[];
+beq=[];
+lb=zeros(n,1);
+ub=l*ones(n,1);
+nonlcon=@cons4;
+fun=@(x)sum((k1-k2)*x);
+x=fmincon(fun,x0,A,b,Aeq,beq,lb,ub,nonlcon,options)
+fun(x)
