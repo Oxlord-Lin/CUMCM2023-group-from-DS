@@ -1,9 +1,9 @@
 function [c,ceq]=cons5(x)
 [n,~]=size(x);
 c=zeros(n,1);
-alpha=1.1744*pi/180;
+alpha=1.5231*pi/180;
 theta=pi/3; 
-d0=83.96;
+d0=86.11;
 l=2.02;
 D=d0+(l/2-x(1))*1852*tan(alpha);
 B1=x(1)*1852-D*cos(alpha)*sin(theta)/cos(alpha+theta);
