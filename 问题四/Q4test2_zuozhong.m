@@ -1,6 +1,6 @@
 options = optimoptions('fmincon','Algorithm','sqp','MaxFunctionEvaluations',15000);
 % options=optimoptions(@fmincon,'MaxFunctionEvaluations',150000);
-n=21;
+n=20;
 l=1.5;
 w=1.98;
 % x0=zeros(n,1);

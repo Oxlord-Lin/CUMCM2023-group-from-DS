@@ -1,6 +1,6 @@
 options = optimoptions('fmincon','Algorithm','sqp','MaxFunctionEvaluations',15000);
 % options=optimoptions(@fmincon,'MaxFunctionEvaluations',150000);
-n =48;
+n =46;
 % x0=zeros(n,1);
 l=1.98;
 w=2.14;
@@ -14,7 +14,6 @@ ub=l*ones(n,1);
 nonlcon=@cons3;
 fun=@(x)(w*n+x(n)-x(1));
 x=fmincon(fun,x0,A,b,Aeq,beq,lb,ub,nonlcon,options);
-
 x
 fun(x)
 % for i=2:n
