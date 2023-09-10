@@ -1,4 +1,4 @@
-function [c,ceq]=cons1(x)
+function [c,ceq]=cons3(x)
 [n,~]=size(x);
 c=zeros(n,1);
 alpha=0.6995*pi/180;

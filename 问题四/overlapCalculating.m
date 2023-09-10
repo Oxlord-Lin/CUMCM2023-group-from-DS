@@ -394,7 +394,7 @@ function M = weight(x,y)
         x_index_rt,y_index_tp];
     w = zeros(4,1);
     for i = 1:4
-        w(i) = norm([x,y] - M(i,:));
+        w(i) = 1/(norm([x,y] - M(i,:)));
     end
     w = w./sum(w);
     M = [M+1,w];

@@ -23,7 +23,6 @@ for i = 2 : lenX - 1
     end
 end
 
-% 先偷个懒
 A(1,1:end) = A(2,1:end);
 B(1,1:end) = B(2,1:end);
 C(1,1:end) = C(2,1:end);
@@ -37,9 +36,6 @@ A(1:end,end) = A(1:end,end);
 B(1:end,end) = B(1:end,end);
 C(1:end,end) = C(1:end,end);
 
-% S = sign(A);
-% B = S.*B;
-% C = S.*C;
 %% 
 Table = zeros(lenX*lenY,6);
 count = 0;
